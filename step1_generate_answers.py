@@ -91,12 +91,17 @@ def main(
         )
         answer = tokenizer.decode(res[0], skip_special_tokens=True)
 
-        if model_type in ['kullm', 'koalpaca_v1_1b', 'solar']:
-            model_answer = answer.split(split_criterion, 1)[1]
-        elif model_type in ['mistral']:
-            model_answer = answer.rsplit(split_criterion, 1)[1]
-        else:
-            raise NotImplementedError
+        try:
+            if model_type in ['kullm', 'koalpaca_v1_1b', 'solar']:
+                model_answer = answer.split(split_criterion, 1)[1]
+            elif model_type in ['mistral']:
+                model_answer = answer.rsplit(split_criterion, 1)[1]
+            else:
+                raise NotImplementedError
+        except IndexError:
+            print("model generate nothing!! Full model answer:")
+            print(answer)
+            model_answer = "(no answer from model)"  # Some models rarely generate nothing.
 
         generated_answers.append(model_answer)
         if debug:
