@@ -1,5 +1,6 @@
-# Korean LLM Auto-evaluation with OpenAI API
-
+# Auto-evaluation for Korean Chat by OpenAI API
+모델의 한국어 대화 능력을 ChatGPT가 평가합니다!  
+ChatGPT evaluates the model's Korean conversation skills!
 
 ## How to use
 Edit the contents of the ```*.sh``` files to suit your purpose, and execute!
