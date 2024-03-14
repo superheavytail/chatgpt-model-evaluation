@@ -2,11 +2,19 @@
 
 
 ## How to use
-Edit the arguments, and run the ```.sh``` file!
-```sh example.sh```
+Edit the contents of the ```*.sh``` files to suit your purpose, and execute!
+
+### step 1
+```
+sh step1_generate_answers.sh
+```
+### step 2
+```
+step2_evaluate_by_chatgpt.sh
+```
 
 ### Supported Models
-- nlpai-lab/kullm-v3
+- nlpai-lab/kullm-v3 (not yet released)
 - nlpai-lab/kullm-polyglot-12.8b-v2
 - upstage/SOLAR-10.7B-Instruct-v1.0
 - mistralai/Mistral-7B-Instruct-v0.2 (excluded since it generates english even though given Korean prompt)
@@ -14,6 +22,8 @@ Edit the arguments, and run the ```.sh``` file!
 - OpenAI Models (gpt-3.5-turbo, gpt-4-turbo)
 
 ## Default Evaluation Template
+**Korean evaluation form isn't pretty good, in our experiment result.**  
+**So we adopted english form and 'Be Korean language expert' system prompt.**
 ### System Prompt
 ```
 You're a helpful assistant and a Korean language expert.
