@@ -26,6 +26,9 @@ you can skip the step 1 and modify the ```step2_evaluate_by_chatgpt.sh``` to dis
 
 ## Evaluation Results
 **KULLM-v3 is not released yet!**
+- [mistralai/Mistral-7B-Instruct-v0.2](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.2) model is often omitted because it frequently generates responses in English, even when the input is provided in Korean.
+- [upstage/SOLAR-10.7B-Instruct-v1.0](https://huggingface.co/upstage/SOLAR-10.7B-Instruct-v1.0) model sometimes do similarly, therefore, its coherence score is relatively low.
+
 | Type   | Model     | Fluency (0 - 5) | Coherence (1 - 5) | Accuracy (1 - 5) | Completeness (1 - 5) | Overall Quality (0-5) | 
 | ------ | ------------------------------------------------------------ | :---------------: | :----------------: | :---------------: | :--------------: | :---------------: | 
 | Closed |  GPT-3.5-Turbo        | 4.93        | 4.88        | 4.33       | 4.12      | 4.43       | 
