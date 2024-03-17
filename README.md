@@ -24,6 +24,22 @@ you can skip the step 1 and modify the ```step2_evaluate_by_chatgpt.sh``` to dis
 - beomi/KoAlpaca-Polyglot-12.8B
 - OpenAI Models (gpt-3.5-turbo, gpt-4-turbo)
 
+## Evaluation Results
+**KULLM-v3 is not released yet!**
+| Type   | Model     | Fluency (0 - 5) | Coherence (1 - 5) | Accuracy (1 - 5) | Completeness (1 - 5) | Overall Quality (0-5) | 
+| ------ | ------------------------------------------------------------ | :---------------: | :----------------: | :---------------: | :--------------: | :---------------: | 
+| Closed |  GPT-3.5-Turbo        | 4.93        | 4.88        | 4.33       | 4.12      | 4.43       | 
+| Closed |  GPT-4-Turbo       |  4.97   | 4.94     |   4.74  |  4.69   |   4.80   | 
+|  |  |  |  |  |  |  |
+| Open   | [KoAlpaca-1.1b](https://github.com/Beomi/KoAlpaca) | 3.90    | 3.25     | 2.60    | 2.37   | 2.67    |
+| Open   |  [SOLAR-10.7-Inst](https://huggingface.co/upstage/SOLAR-10.7B-Instruct-v1.0)      | 4.24      | 3.04      | 3.71     | 3.77    | 3.32     |
+| Open   | [KULLM-v2](https://github.com/nlpai-lab/KULLM) | 3.70  | 3.25   | 2.82  | 2.48 | 2.80  |
+| Open   |  [KULLM-v3]() | **4.68**   | **4.62**    | **3.83**   | **3.9**  | **4.08**   | 
+
+<p align="center">
+  <img src="https://github.com/superheavytail/chatgpt-model-evaluation/assets/11497545/7f52f7af-1597-44d9-a52e-0f15d2aab861" />
+</p>
+
 ## Default Evaluation Template
 **Korean evaluation form isn't pretty good, in our experiment result.**  
 **So we adopted english form and 'Be Korean language expert' system prompt.**
