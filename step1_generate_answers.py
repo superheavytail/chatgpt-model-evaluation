@@ -1,11 +1,14 @@
 from pathlib import Path
+import os
 import fire
 import jsonlines
 import json
 
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 from tqdm import tqdm
+from setproctitle import setproctitle
 from batched_chatgpt import call_chatgpt
+import torch
 
 
 def main(
@@ -16,6 +19,7 @@ def main(
     model_type,
     debug: bool = False
 ):
+    setproctitle("potatowook")
     # check if save path is safe
     save_path = Path(output_dir) / save_name
     save_path = save_path.with_suffix(".jsonl")
@@ -28,14 +32,38 @@ def main(
 
     # prepare evaluation set
     eval_set = [e for e in jsonlines.open(eval_set_path).iter()]
-    eval_set = eval_set[:5] if debug else eval_set
+    eval_set = eval_set[:12] if debug else eval_set
 
     generated_answers = []
 
     if model_type == 'openai':
         input_texts = [f"{e['instruction']}\n\n{e['instances'][0]['input']}" for e in eval_set]
         generated_answers = call_chatgpt(input_texts, chunk_size=20, model_name=model_name)
+    elif model_type == 'kullm3':
+        # system-prompted kullm3, use transformers pipeline
+
+        # multi execution test
+        try:
+            local_rank = int(os.environ['LOCAL_RANK'])
+            world_size = int(os.environ['WORLD_SIZE'])
+            # is_parallel = True
+            eval_set = eval_set[local_rank::world_size]
+            save_path = (save_path.parent / (save_path.stem + f'-rank{local_rank}')).with_suffix('.jsonl')
+        except KeyError:
+            # is_parallel = False
+            pass
+
+        model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.bfloat16, attn_implementation='sdpa')
+        tokenizer = AutoTokenizer.from_pretrained(model_name)
+        pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, device=f'cuda:{local_rank}', return_full_text=False,
+                        do_sample=True, top_p=0.8, temperature=0.7, repetition_penalty=1.2)
+        for e in tqdm(eval_set):
+            messages = [{'role': 'user', 'content': f"{e['instruction']}\n\n{e['instances'][0]['input']}"}]
+            inputs = tokenizer.apply_chat_template(messages, tokenize=False)
+            generated_answers.append(pipe(inputs, max_new_tokens=2048)[0]['generated_text'])
+            print(generated_answers[-1])
     else:
+        # There is more simple way, but let us move fast.
         # model, tokenizer load
         try:
             model = AutoModelForCausalLM.from_pretrained(
